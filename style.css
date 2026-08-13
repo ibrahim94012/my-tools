@@ -21,8 +21,8 @@
   --radius-sm: 10px;
   --shadow-soft: 0 10px 30px -12px rgba(11, 95, 255, 0.28);
   --shadow-card: 0 6px 18px -8px rgba(11, 95, 255, 0.22);
-  --font-display: 'Poppins', 'Hind Siliguri', sans-serif;
-  --font-body: 'Hind Siliguri', 'Poppins', sans-serif;
+  --font-display: 'Poppins', 'Inter', sans-serif;
+  --font-body: 'Inter', 'Poppins', sans-serif;
 }
 
 *{ box-sizing:border-box; margin:0; padding:0; }
@@ -451,6 +451,44 @@ p.subtitle{
   border-color: var(--primary);
   background: var(--primary-light);
 }
+
+/* ---------- Settings / profile sheet ---------- */
+.settings-profile{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding: 4px 4px 18px;
+  border-bottom: 1px solid var(--bg-2);
+  margin-bottom: 14px;
+}
+.settings-avatar{
+  width:52px; height:52px;
+  border-radius:50%;
+  object-fit:cover;
+  box-shadow: var(--shadow-card);
+}
+.settings-name{
+  font-weight:700;
+  font-size:15.5px;
+  color: var(--text);
+}
+.settings-email{
+  font-size:12.5px;
+  color: var(--text-muted);
+  margin-top:2px;
+}
+.settings-list{ display:flex; flex-direction:column; }
+.settings-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:15px 6px;
+  font-size:14.5px;
+  font-weight:600;
+  color: var(--danger);
+}
+.settings-item span{ display:flex; align-items:center; gap:10px; }
+.settings-item i.fa-chevron-right{ color: var(--text-muted); font-size:12px; }
 
 /* ---------- Tool viewer ---------- */
 .viewer-sheet{ padding:0; height:92vh; display:flex; flex-direction:column; }

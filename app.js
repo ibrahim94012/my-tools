@@ -1,7 +1,8 @@
 /* ============================================================
    My Tools — app.js
-   সমস্ত অ্যাপ লজিক: Google Sign-in, PIN, Fingerprint (WebAuthn),
-   এবং Tools যোগ/দেখা/মোছা — সব Firebase Realtime Database দিয়ে।
+   App logic: Google Sign-in, PIN, Fingerprint (WebAuthn),
+   default tool seeding, and Tools CRUD — all via Firebase
+   Realtime Database.
    ============================================================ */
 
 /* ---------------- Helpers ---------------- */
@@ -48,7 +49,8 @@ let uploadedHtml = '';
 let toolsCache = {};
 
 const ICON_CHOICES = [
-  'fa-solid fa-toolbox','fa-solid fa-calculator','fa-solid fa-code',
+  'fa-solid fa-toolbox','fa-solid fa-lock','fa-solid fa-note-sticky',
+  'fa-solid fa-list-check','fa-solid fa-calculator','fa-solid fa-code',
   'fa-solid fa-chart-line','fa-solid fa-clock','fa-solid fa-image',
   'fa-solid fa-file-lines','fa-solid fa-qrcode','fa-solid fa-palette',
   'fa-solid fa-gauge','fa-solid fa-database','fa-solid fa-gear'
@@ -57,17 +59,18 @@ const ICON_CHOICES = [
 /* ---------------- Auth: Google Sign-in ---------------- */
 $('googleSignInBtn').addEventListener('click', async () => {
   try{
-    $('googleSignInBtn').querySelector('span').textContent = 'অপেক্ষা করুন...';
+    $('googleSignInBtn').querySelector('span').textContent = 'Please wait...';
     await auth.signInWithPopup(googleProvider);
   }catch(err){
     console.error(err);
-    toast('সাইন-ইন ব্যর্থ হয়েছে, আবার চেষ্টা করুন');
-    $('googleSignInBtn').querySelector('span').textContent = 'Google দিয়ে প্রবেশ করুন';
+    toast('Sign-in failed, please try again');
+    $('googleSignInBtn').querySelector('span').textContent = 'Continue with Google';
   }
 });
 
 $('logoutBtn').addEventListener('click', async () => {
   sessionStorage.removeItem('mt_unlocked');
+  $('sheetSettings').classList.add('hidden');
   await auth.signOut();
 });
 
@@ -82,7 +85,7 @@ auth.onAuthStateChanged(async (user) => {
   const profile = snap.val();
 
   if(!profile || !profile.pinSet){
-    // নতুন ইউজার — প্রোফাইল তৈরি ও PIN সেট করতে হবে
+    // New user — create profile and ask them to set a PIN
     await db.ref('users/' + user.uid + '/profile').update({
       name: user.displayName || '',
       email: user.email || '',
@@ -92,8 +95,8 @@ auth.onAuthStateChanged(async (user) => {
     pinMode = 'setup';
     pendingPin = '';
     renderPinDots();
-    $('pinTitle').textContent = 'একটি পিন সেট করুন';
-    $('pinSubtitle').textContent = '৪ সংখ্যার একটি পিন দিন, যা দিয়ে আপনি পরবর্তীতে অ্যাপ আনলক করবেন';
+    $('pinTitle').textContent = 'Set a PIN';
+    $('pinSubtitle').textContent = 'Choose a 4-digit PIN you\u2019ll use to unlock the app';
     showScreen('screenPin');
     return;
   }
@@ -103,15 +106,15 @@ auth.onAuthStateChanged(async (user) => {
     return;
   }
 
-  // আনলক করতে হবে
+  // Needs to unlock
   if(profile.webauthnEnabled){
     showScreen('screenUnlockChoice');
   } else {
     pinMode = 'unlock';
     pendingPin = '';
     renderPinDots();
-    $('pinTitle').textContent = 'পিন দিয়ে আনলক করুন';
-    $('pinSubtitle').textContent = 'আপনার ৪ সংখ্যার পিন দিন';
+    $('pinTitle').textContent = 'Unlock with PIN';
+    $('pinSubtitle').textContent = 'Enter your 4-digit PIN';
     showScreen('screenPin');
   }
 });
@@ -154,7 +157,9 @@ async function handlePinComplete(){
       pinSet: true
     });
     pendingPin = '';
-    // ফিঙ্গারপ্রিন্ট সাপোর্ট আছে কিনা যাচাই
+    await seedDefaultTools();
+
+    // Check if the device supports a platform authenticator (fingerprint/face)
     let fpAvailable = false;
     try{
       if(window.PublicKeyCredential && PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable){
@@ -179,8 +184,30 @@ async function handlePinComplete(){
     enterDashboard();
   } else {
     pinError();
-    toast('পিন সঠিক নয়');
+    toast('Incorrect PIN');
   }
+}
+
+/* ---------------- Default tools (seeded once per new user) ---------------- */
+async function seedDefaultTools(){
+  const profSnap = await db.ref('users/' + currentUser.uid + '/profile').once('value');
+  const profile = profSnap.val();
+  if(profile && profile.seeded) return;
+
+  const updates = {};
+  DEFAULT_TOOLS.forEach((tool) => {
+    const key = db.ref('users/' + currentUser.uid + '/tools').push().key;
+    updates[key] = {
+      name: tool.name,
+      description: tool.description,
+      icon: tool.icon,
+      html: tool.html,
+      createdAt: Date.now()
+    };
+  });
+
+  await db.ref('users/' + currentUser.uid + '/tools').update(updates);
+  await db.ref('users/' + currentUser.uid + '/profile').update({ seeded: true });
 }
 
 /* ---------------- Fingerprint (WebAuthn) setup ---------------- */
@@ -208,10 +235,10 @@ $('setupFingerprintBtn').addEventListener('click', async () => {
       webauthnEnabled: true,
       credentialId: bufferToB64url(cred.rawId)
     });
-    toast('ফিঙ্গারপ্রিন্ট সেট হয়েছে ✅');
+    toast('Fingerprint unlock enabled \u2705');
   }catch(err){
     console.error(err);
-    toast('ফিঙ্গারপ্রিন্ট সেট করা যায়নি, বাদ দেওয়া হলো');
+    toast('Could not set up fingerprint, skipping');
   }
   enterDashboard();
 });
@@ -241,7 +268,7 @@ $('unlockFingerprintBtn').addEventListener('click', async () => {
     enterDashboard();
   }catch(err){
     console.error(err);
-    toast('ফিঙ্গারপ্রিন্ট মেলেনি, পিন ব্যবহার করুন');
+    toast('Fingerprint didn\u2019t match, use PIN instead');
   }
 });
 
@@ -249,18 +276,34 @@ $('useUnlockPinBtn').addEventListener('click', () => {
   pinMode = 'unlock';
   pendingPin = '';
   renderPinDots();
-  $('pinTitle').textContent = 'পিন দিয়ে আনলক করুন';
-  $('pinSubtitle').textContent = 'আপনার ৪ সংখ্যার পিন দিন';
+  $('pinTitle').textContent = 'Unlock with PIN';
+  $('pinSubtitle').textContent = 'Enter your 4-digit PIN';
   showScreen('screenPin');
 });
 
 /* ---------------- Dashboard ---------------- */
 function enterDashboard(){
   showScreen('screenDashboard');
-  $('userGreeting').textContent = (currentUser.displayName || 'বন্ধু').split(' ')[0];
-  if(currentUser.photoURL) $('userAvatar').src = currentUser.photoURL;
+  $('userGreeting').textContent = (currentUser.displayName || 'there').split(' ')[0];
+  if(currentUser.photoURL){
+    $('userAvatar').src = currentUser.photoURL;
+    $('settingsAvatar').src = currentUser.photoURL;
+  }
+  $('settingsName').textContent = currentUser.displayName || 'My Tools User';
+  $('settingsEmail').textContent = currentUser.email || '';
   loadTools();
 }
+
+/* ---------------- Profile / Settings sheet ---------------- */
+$('profileBtn').addEventListener('click', () => {
+  $('sheetSettings').classList.remove('hidden');
+});
+$('closeSettingsBtn').addEventListener('click', () => {
+  $('sheetSettings').classList.add('hidden');
+});
+$('sheetSettings').addEventListener('click', (e) => {
+  if(e.target.id === 'sheetSettings') $('sheetSettings').classList.add('hidden');
+});
 
 function loadTools(){
   db.ref('users/' + currentUser.uid + '/tools').on('value', (snap) => {
@@ -282,7 +325,7 @@ function renderTools(){
     const t = toolsCache[id];
     return `
       <div class="tool-card" data-id="${id}">
-        <button class="tool-delete" data-delete="${id}" aria-label="মুছুন">
+        <button class="tool-delete" data-delete="${id}" aria-label="Delete">
           <i class="fa-solid fa-trash"></i>
         </button>
         <div class="tool-icon"><i class="${t.icon}"></i></div>
@@ -312,9 +355,9 @@ function escapeHtml(str){
 }
 
 function deleteTool(id){
-  if(!confirm('এই টুলটি মুছে ফেলতে চান?')) return;
+  if(!confirm('Delete this tool?')) return;
   db.ref('users/' + currentUser.uid + '/tools/' + id).remove();
-  toast('টুল মোছা হয়েছে');
+  toast('Tool deleted');
 }
 
 /* ---------------- Add Tool sheet ---------------- */
@@ -355,14 +398,14 @@ $('toolFileInput').addEventListener('change', (e) => {
   const file = e.target.files[0];
   if(!file) return;
   if(!file.name.endsWith('.html') && file.type !== 'text/html'){
-    $('addToolError').textContent = 'শুধুমাত্র .html ফাইল আপলোড করুন';
+    $('addToolError').textContent = 'Please upload an .html file only';
     e.target.value = '';
     return;
   }
   const reader = new FileReader();
   reader.onload = () => {
     uploadedHtml = reader.result;
-    $('fileStatus').innerHTML = `<i class="fa-solid fa-circle-check"></i> ${escapeHtml(file.name)} আপলোড হয়েছে`;
+    $('fileStatus').innerHTML = `<i class="fa-solid fa-circle-check"></i> ${escapeHtml(file.name)} uploaded`;
   };
   reader.readAsText(file);
 });
@@ -372,11 +415,11 @@ $('saveToolBtn').addEventListener('click', async () => {
   const desc = $('toolDescInput').value.trim();
 
   if(!name){
-    $('addToolError').textContent = 'টুলের নাম দিন';
+    $('addToolError').textContent = 'Please enter a tool name';
     return;
   }
   if(!uploadedHtml){
-    $('addToolError').textContent = 'একটি HTML ফাইল আপলোড করুন';
+    $('addToolError').textContent = 'Please upload an HTML file';
     return;
   }
 
@@ -392,13 +435,13 @@ $('saveToolBtn').addEventListener('click', async () => {
       createdAt: Date.now()
     });
     $('sheetAddTool').classList.add('hidden');
-    toast('টুল যোগ হয়েছে ✅');
+    toast('Tool added \u2705');
   }catch(err){
     console.error(err);
-    $('addToolError').textContent = 'সংরক্ষণ ব্যর্থ হয়েছে, আবার চেষ্টা করুন';
+    $('addToolError').textContent = 'Could not save, please try again';
   }finally{
     $('saveToolBtn').disabled = false;
-    $('saveToolBtn').innerHTML = 'সংরক্ষণ করুন';
+    $('saveToolBtn').innerHTML = 'Save Tool';
   }
 });
 
