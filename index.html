@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>My Tools</title>
+<link rel="icon" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0B5FFF">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<!-- Styles -->
+<style>
+/* ============================================================
+   My Tools — style.css
+   Design tokens: light theme, all-blue palette
+   ============================================================ */
+
+:root{
+  --bg: #EAF4FF;
+  --bg-2: #DCEBFF;
+  --surface: #FFFFFF;
+  --primary: #2D8CFF;
+  --primary-dark: #0B5FFF;
+  --primary-deep: #063E9E;
+  --primary-light: #BFE0FF;
+  --primary-tint: #EAF4FF;
+  --text: #0F2A4A;
+  --text-muted: #5B7C99;
+  --danger: #FF5C5C;
+  --success: #22C55E;
+  --radius-lg: 22px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+  --shadow-soft: 0 10px 30px -12px rgba(11, 95, 255, 0.28);
+  --shadow-card: 0 6px 18px -8px rgba(11, 95, 255, 0.22);
+  --font-display: 'Poppins', 'Inter', sans-serif;
+  --font-body: 'Inter', 'Poppins', sans-serif;
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+html,body{
+  height:100%;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior:none;
+}
+
+body{
+  max-width:480px;
+  margin:0 auto;
+  min-height:100vh;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+}
+
+button{ font-family:inherit; cursor:pointer; border:none; background:none; }
+input{ font-family:inherit; }
+a{ color:inherit; text-decoration:none; }
+
+.hidden{ display:none !important; }
+
+.screen{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  padding:28px 24px 100px;
+  min-height:100vh;
+  animation: fadeIn .35s ease;
+}
+
+@keyframes fadeIn{
+  from{ opacity:0; transform:translateY(8px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+
+/* ---------- Brand / Logo ---------- */
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:8px;
+}
+.brand .logo-badge{
+  width:44px; height:44px;
+  border-radius:14px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-deep));
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:20px;
+  box-shadow: var(--shadow-soft);
+}
+.brand .logo-text{
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:22px;
+  letter-spacing:-0.02em;
+  color: var(--primary-deep);
+}
+
+/* ---------- Centered auth-style screens ---------- */
+.center-screen{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  gap:18px;
+}
+
+.hero-icon{
+  width:96px; height:96px;
+  border-radius:50%;
+  background: radial-gradient(circle at 30% 30%, var(--primary-light), var(--primary));
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:38px;
+  box-shadow: var(--shadow-soft);
+  animation: pulseGlow 2.6s ease-in-out infinite;
+}
+@keyframes pulseGlow{
+  0%,100%{ box-shadow: 0 0 0 0 rgba(45,140,255,.35), var(--shadow-soft); }
+  50%{ box-shadow: 0 0 0 14px rgba(45,140,255,0), var(--shadow-soft); }
+}
+
+h1.title{
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight:700;
+  color: var(--primary-deep);
+}
+p.subtitle{
+  color: var(--text-muted);
+  font-size:14.5px;
+  line-height:1.6;
+  max-width:280px;
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  width:100%;
+  padding:15px 18px;
+  border-radius: var(--radius-md);
+  font-weight:600;
+  font-size:15px;
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+}
+.btn:active{ transform: scale(.97); }
+
+.btn-primary{
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color:#fff;
+  box-shadow: var(--shadow-soft);
+}
+.btn-outline{
+  background: var(--surface);
+  color: var(--primary-deep);
+  border: 1.5px solid var(--primary-light);
+}
+.btn-ghost{
+  background: transparent;
+  color: var(--text-muted);
+  font-size:14px;
+}
+.btn-danger-outline{
+  background: #fff;
+  color: var(--danger);
+  border: 1.5px solid #FFD3D3;
+}
+
+.google-btn{
+  background:#fff;
+  color:#3c4043;
+  border:1.5px solid #E3ECFA;
+  box-shadow: var(--shadow-card);
+}
+.google-btn img{ width:20px; height:20px; }
+
+/* ---------- PIN pad ---------- */
+.pin-dots{
+  display:flex;
+  gap:14px;
+  margin: 6px 0 4px;
+}
+.pin-dot{
+  width:16px; height:16px;
+  border-radius:50%;
+  border:2px solid var(--primary);
+  background: transparent;
+  transition: all .15s ease;
+}
+.pin-dot.filled{
+  background: var(--primary);
+  box-shadow: 0 0 0 5px rgba(45,140,255,.18);
+}
+.pin-dot.error{
+  border-color: var(--danger);
+  background: var(--danger);
+  animation: shake .35s ease;
+}
+@keyframes shake{
+  0%,100%{ transform:translateX(0); }
+  25%{ transform:translateX(-6px); }
+  75%{ transform:translateX(6px); }
+}
+
+.keypad{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:14px;
+  width:100%;
+  max-width:280px;
+  margin-top:22px;
+}
+.key{
+  aspect-ratio:1;
+  border-radius:50%;
+  background: var(--surface);
+  color: var(--primary-deep);
+  font-size:20px;
+  font-weight:600;
+  box-shadow: var(--shadow-card);
+  display:flex; align-items:center; justify-content:center;
+}
+.key:active{ background: var(--primary-tint); transform:scale(.94); }
+.key.key-action{ box-shadow:none; background:transparent; color:var(--text-muted); font-size:16px; }
+
+/* ---------- Fingerprint prompt ---------- */
+.fingerprint-btn{
+  width:110px; height:110px;
+  border-radius:50%;
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+  display:flex; align-items:center; justify-content:center;
+  color: var(--primary);
+  font-size:44px;
+  position:relative;
+}
+.fingerprint-btn::after{
+  content:'';
+  position:absolute; inset:-10px;
+  border-radius:50%;
+  border:2px solid var(--primary-light);
+  animation: ripple 1.8s ease-out infinite;
+}
+@keyframes ripple{
+  0%{ transform:scale(.85); opacity:1; }
+  100%{ transform:scale(1.35); opacity:0; }
+}
+
+/* ---------- Top App Bar (dashboard) ---------- */
+.appbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:20px 20px 8px;
+}
+.appbar .icon-btn{
+  width:40px; height:40px;
+  border-radius:12px;
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  display:flex; align-items:center; justify-content:center;
+  color: var(--primary-deep);
+  font-size:16px;
+}
+
+.dashboard-body{
+  padding:8px 20px 110px;
+  flex:1;
+}
+
+.section-label{
+  font-size:13px;
+  color: var(--text-muted);
+  margin: 18px 2px 10px;
+  font-weight:600;
+  letter-spacing:.02em;
+}
+
+/* ---------- Tool grid & cards ---------- */
+.tool-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:14px;
+}
+.tool-card{
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  padding:16px 14px;
+  box-shadow: var(--shadow-card);
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  position:relative;
+  transition: transform .12s ease;
+}
+.tool-card:active{ transform: scale(.97); }
+
+.tool-icon{
+  width:46px; height:46px;
+  border-radius:13px;
+  background: linear-gradient(135deg, var(--primary-tint), var(--primary-light));
+  color: var(--primary-deep);
+  display:flex; align-items:center; justify-content:center;
+  font-size:19px;
+}
+.tool-name{
+  font-weight:600;
+  font-size:14.5px;
+  color: var(--text);
+  line-height:1.3;
+}
+.tool-desc{
+  font-size:12px;
+  color: var(--text-muted);
+  line-height:1.4;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.tool-delete{
+  position:absolute;
+  top:10px; right:10px;
+  width:26px; height:26px;
+  border-radius:50%;
+  background: #FFF1F1;
+  color: var(--danger);
+  font-size:11px;
+  display:flex; align-items:center; justify-content:center;
+}
+
+.empty-state{
+  text-align:center;
+  padding:60px 20px;
+  color: var(--text-muted);
+}
+.empty-state i{ font-size:40px; color: var(--primary-light); margin-bottom:14px; }
+.empty-state p{ font-size:14px; line-height:1.6; }
+
+/* ---------- FAB ---------- */
+.fab{
+  position:fixed;
+  bottom:26px;
+  left:50%;
+  transform:translateX(-50%);
+  width:64px; height:64px;
+  border-radius:50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color:#fff;
+  font-size:26px;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow: var(--shadow-soft);
+  z-index:40;
+  max-width:480px;
+  margin:0 auto;
+}
+.fab:active{ transform:translateX(-50%) scale(.92); }
+
+/* ---------- Bottom sheet (add tool / view tool) ---------- */
+.sheet-overlay{
+  position:fixed; inset:0;
+  background: rgba(11,40,74,.42);
+  z-index:50;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+}
+.sheet{
+  width:100%;
+  max-width:480px;
+  background: var(--surface);
+  border-radius: 26px 26px 0 0;
+  padding:14px 22px 26px;
+  max-height:88vh;
+  overflow-y:auto;
+  animation: slideUp .28s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes slideUp{
+  from{ transform:translateY(100%); }
+  to{ transform:translateY(0); }
+}
+.sheet-handle{
+  width:40px; height:5px;
+  background: var(--primary-light);
+  border-radius:10px;
+  margin: 0 auto 16px;
+}
+.sheet-title{
+  font-family: var(--font-display);
+  font-weight:700;
+  font-size:19px;
+  color: var(--primary-deep);
+  margin-bottom:16px;
+}
+
+.field{ margin-bottom:16px; }
+.field label{
+  display:block;
+  font-size:13px;
+  color: var(--text-muted);
+  margin-bottom:6px;
+  font-weight:600;
+}
+.field input[type=text],
+.field textarea{
+  width:100%;
+  padding:13px 14px;
+  border-radius: var(--radius-sm);
+  border:1.5px solid var(--primary-light);
+  background: var(--primary-tint);
+  color: var(--text);
+  font-size:14.5px;
+  outline:none;
+}
+.field input[type=text]:focus,
+.field textarea:focus{ border-color: var(--primary); }
+.field textarea{ resize:vertical; min-height:70px; }
+
+.icon-preview{
+  display:flex; align-items:center; gap:12px;
+  margin-top:8px;
+}
+.icon-preview .tool-icon{ width:40px; height:40px; font-size:16px; }
+
+.file-drop{
+  border:1.5px dashed var(--primary-light);
+  border-radius: var(--radius-sm);
+  padding:20px 14px;
+  text-align:center;
+  color: var(--text-muted);
+  font-size:13px;
+  background: var(--primary-tint);
+}
+.file-drop i{ font-size:22px; color:var(--primary); display:block; margin-bottom:6px; }
+.file-name{
+  margin-top:8px;
+  font-size:12.5px;
+  color: var(--primary-deep);
+  font-weight:600;
+}
+
+.icon-choices{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:8px;
+}
+.icon-choice{
+  width:38px; height:38px;
+  border-radius:10px;
+  background: var(--primary-tint);
+  color: var(--primary-deep);
+  display:flex; align-items:center; justify-content:center;
+  border:1.5px solid transparent;
+  font-size:15px;
+}
+.icon-choice.selected{
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+
+/* ---------- Offline banner ---------- */
+.offline-banner{
+  background: linear-gradient(135deg, var(--primary-deep), var(--primary-dark));
+  color:#fff;
+  font-size:12.5px;
+  font-weight:600;
+  text-align:center;
+  padding:9px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+
+/* ---------- Settings / profile sheet ---------- */
+.settings-profile{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding: 4px 4px 18px;
+  border-bottom: 1px solid var(--bg-2);
+  margin-bottom: 14px;
+}
+.settings-avatar{
+  width:52px; height:52px;
+  border-radius:50%;
+  object-fit:cover;
+  box-shadow: var(--shadow-card);
+}
+.settings-name{
+  font-weight:700;
+  font-size:15.5px;
+  color: var(--text);
+}
+.settings-email{
+  font-size:12.5px;
+  color: var(--text-muted);
+  margin-top:2px;
+}
+.settings-list{ display:flex; flex-direction:column; }
+.settings-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:15px 6px;
+  font-size:14.5px;
+  font-weight:600;
+  color: var(--danger);
+}
+.settings-item span{ display:flex; align-items:center; gap:10px; }
+.settings-item i.fa-chevron-right{ color: var(--text-muted); font-size:12px; }
+.settings-item-neutral{ color: var(--text); }
+.settings-item-neutral i.fa-solid:first-child{ color: var(--primary); width:18px; }
+.settings-status{
+  font-size:12.5px;
+  font-weight:600;
+  color: var(--text-muted);
+  background: var(--primary-tint);
+  padding:4px 10px;
+  border-radius:999px;
+}
+.settings-status.on{ color: var(--primary-deep); background: var(--primary-light); }
+.settings-item.disabled{ opacity:.45; pointer-events:none; }
+
+/* ---------- Tool viewer ---------- */
+.viewer-sheet{ padding:0; height:92vh; display:flex; flex-direction:column; }
+.viewer-header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 18px;
+  border-bottom:1px solid var(--bg-2);
+}
+.viewer-header .sheet-title{ margin:0; font-size:16px; }
+.viewer-header button{ font-size:18px; color:var(--text-muted); }
+.viewer-frame{
+  flex:1;
+  border:none;
+  width:100%;
+  background:#fff;
+}
+
+/* ---------- Toast ---------- */
+.toast{
+  position:fixed;
+  bottom:100px;
+  left:50%;
+  transform:translateX(-50%);
+  background: var(--primary-deep);
+  color:#fff;
+  padding:12px 20px;
+  border-radius: 999px;
+  font-size:13.5px;
+  box-shadow: var(--shadow-soft);
+  z-index:80;
+  max-width:90%;
+  text-align:center;
+  animation: toastIn .25s ease;
+}
+@keyframes toastIn{
+  from{ opacity:0; transform:translate(-50%, 10px); }
+  to{ opacity:1; transform:translate(-50%, 0); }
+}
+
+.error-text{
+  color: var(--danger);
+  font-size:12.5px;
+  margin-top:6px;
+  min-height:16px;
+}
+
+.spinner{
+  width:20px; height:20px;
+  border:2.5px solid rgba(255,255,255,.4);
+  border-top-color:#fff;
+  border-radius:50%;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin{ to{ transform:rotate(360deg); } }
+
+</style>
+</head>
+<body>
+
+  <!-- ===================== LOGIN ===================== -->
+  <section id="screenLogin" class="screen center-screen">
+    <div class="hero-icon"><i class="fa-solid fa-toolbox"></i></div>
+    <h1 class="title">My Tools</h1>
+    <p class="subtitle">All your everyday tools in one place — private, secure, and just for you</p>
+    <div style="width:100%; max-width:300px; margin-top:10px;">
+      <button id="googleSignInBtn" class="btn google-btn">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="">
+        <span>Continue with Google</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ===================== PIN (setup / unlock) ===================== -->
+  <section id="screenPin" class="screen center-screen hidden">
+    <div class="hero-icon"><i class="fa-solid fa-lock"></i></div>
+    <h1 class="title" id="pinTitle">Set a PIN</h1>
+    <p class="subtitle" id="pinSubtitle">Choose a 4-digit PIN</p>
+
+    <div class="pin-dots" id="pinDots">
+      <span class="pin-dot"></span>
+      <span class="pin-dot"></span>
+      <span class="pin-dot"></span>
+      <span class="pin-dot"></span>
+    </div>
+
+    <div class="keypad">
+      <button class="key" data-digit="1">1</button>
+      <button class="key" data-digit="2">2</button>
+      <button class="key" data-digit="3">3</button>
+      <button class="key" data-digit="4">4</button>
+      <button class="key" data-digit="5">5</button>
+      <button class="key" data-digit="6">6</button>
+      <button class="key" data-digit="7">7</button>
+      <button class="key" data-digit="8">8</button>
+      <button class="key" data-digit="9">9</button>
+      <span></span>
+      <button class="key" data-digit="0">0</button>
+      <button class="key key-action" id="pinBackspace"><i class="fa-solid fa-delete-left"></i></button>
+    </div>
+    <button class="btn btn-ghost hidden" id="pinCancelLink" style="margin-top:14px; width:auto;">Cancel</button>
+  </section>
+
+  <!-- ===================== FINGERPRINT SETUP (first time only) ===================== -->
+  <section id="screenFingerprintSetup" class="screen center-screen hidden">
+    <div class="fingerprint-btn"><i class="fa-solid fa-fingerprint"></i></div>
+    <h1 class="title">Set up fingerprint unlock</h1>
+    <p class="subtitle">Use your device's fingerprint sensor for a faster, secure unlock</p>
+    <div style="width:100%; max-width:300px; margin-top:6px; display:flex; flex-direction:column; gap:10px;">
+      <button id="setupFingerprintBtn" class="btn btn-primary">
+        <i class="fa-solid fa-fingerprint"></i> Add fingerprint
+      </button>
+      <button id="skipFingerprintBtn" class="btn btn-ghost">Not now, skip</button>
+    </div>
+  </section>
+
+  <!-- ===================== UNLOCK CHOICE (fingerprint enabled users) ===================== -->
+  <section id="screenUnlockChoice" class="screen center-screen hidden">
+    <div class="fingerprint-btn"><i class="fa-solid fa-fingerprint"></i></div>
+    <h1 class="title">Unlock</h1>
+    <p class="subtitle">Use your fingerprint for quick access</p>
+    <div style="width:100%; max-width:300px; margin-top:6px; display:flex; flex-direction:column; gap:10px;">
+      <button id="unlockFingerprintBtn" class="btn btn-primary">
+        <i class="fa-solid fa-fingerprint"></i> Use fingerprint
+      </button>
+      <button id="useUnlockPinBtn" class="btn btn-ghost">Use PIN instead</button>
+    </div>
+  </section>
+
+  <!-- ===================== OFFLINE BLOCKED (no cached session on first-ever offline load) ===================== -->
+  <section id="screenOfflineBlocked" class="screen center-screen hidden">
+    <div class="hero-icon"><i class="fa-solid fa-wifi"></i></div>
+    <h1 class="title">You're offline</h1>
+    <p class="subtitle">This device hasn't loaded My Tools before, so there's nothing saved to show yet. Connect to the internet once to get started.</p>
+    <div style="width:100%; max-width:300px; margin-top:6px;">
+      <button id="retryOnlineBtn" class="btn btn-primary"><i class="fa-solid fa-rotate-right"></i> Try again</button>
+    </div>
+  </section>
+
+  <!-- ===================== DASHBOARD ===================== -->
+  <section id="screenDashboard" class="screen hidden" style="padding:0;">
+    <div class="offline-banner hidden" id="offlineBanner">
+      <i class="fa-solid fa-cloud-arrow-down"></i> You're offline — showing your saved tools
+    </div>
+    <div class="appbar">
+      <div class="brand">
+        <div class="logo-badge"><i class="fa-solid fa-toolbox"></i></div>
+        <div>
+          <div class="logo-text">My Tools</div>
+          <div style="font-size:11.5px; color:var(--text-muted);">Hi, <span id="userGreeting">there</span></div>
+        </div>
+      </div>
+      <button id="profileBtn" class="icon-btn" style="width:40px; height:40px; padding:0; overflow:hidden; border-radius:12px;">
+        <img id="userAvatar" src="" alt="" style="width:100%; height:100%; object-fit:cover;">
+      </button>
+    </div>
+
+    <div class="dashboard-body">
+      <div class="section-label">Your Tools</div>
+      <div class="tool-grid" id="toolGrid"></div>
+
+      <div class="empty-state hidden" id="emptyState">
+        <i class="fa-solid fa-box-open"></i>
+        <p>No tools yet.<br>Tap the + button below to add your first tool.</p>
+      </div>
+    </div>
+
+    <button class="fab" id="fabAddTool"><i class="fa-solid fa-plus"></i></button>
+  </section>
+
+  <!-- ===================== SETTINGS SHEET (profile menu) ===================== -->
+  <div class="sheet-overlay hidden" id="sheetSettings">
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <div class="settings-profile">
+        <img id="settingsAvatar" src="" alt="" class="settings-avatar">
+        <div>
+          <div class="settings-name" id="settingsName">Name</div>
+          <div class="settings-email" id="settingsEmail">email@example.com</div>
+        </div>
+      </div>
+
+      <div class="section-label" style="margin:6px 2px 8px;">Security</div>
+      <div class="settings-list">
+        <button class="settings-item settings-item-neutral" id="changePinBtn">
+          <span><i class="fa-solid fa-key"></i> Change PIN</span>
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+        <button class="settings-item settings-item-neutral" id="fingerprintToggleBtn">
+          <span><i class="fa-solid fa-fingerprint"></i> Fingerprint Unlock</span>
+          <span class="settings-status" id="fingerprintStatus">Off</span>
+        </button>
+      </div>
+
+      <div class="section-label" style="margin:16px 2px 8px;">Account</div>
+      <div class="settings-list">
+        <button class="settings-item" id="logoutBtn">
+          <span><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</span>
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+
+      <button class="btn btn-ghost" id="closeSettingsBtn" style="margin-top:10px;">Close</button>
+    </div>
+  </div>
+
+  <!-- ===================== ADD TOOL SHEET ===================== -->
+  <div class="sheet-overlay hidden" id="sheetAddTool">
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-title">Add a New Tool</div>
+
+      <div class="field">
+        <label>Tool name</label>
+        <input type="text" id="toolNameInput" placeholder="e.g. Age Calculator">
+      </div>
+
+      <div class="field">
+        <label>Description (optional)</label>
+        <textarea id="toolDescInput" placeholder="A short line about what this tool does"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Choose an icon</label>
+        <div class="icon-preview">
+          <div class="tool-icon" id="iconPreview"><i class="fa-solid fa-toolbox"></i></div>
+          <span style="font-size:12.5px; color:var(--text-muted);">Preview</span>
+        </div>
+        <div class="icon-choices" id="iconChoices"></div>
+      </div>
+
+      <div class="field">
+        <label>Upload HTML file</label>
+        <label for="toolFileInput" style="display:block; cursor:pointer;">
+          <div class="file-drop">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            Tap here to choose an .html file
+          </div>
+        </label>
+        <input type="file" id="toolFileInput" accept=".html,text/html" class="hidden">
+        <div class="file-name" id="fileStatus"></div>
+      </div>
+
+      <div class="error-text" id="addToolError"></div>
+
+      <button class="btn btn-primary" id="saveToolBtn" style="margin-top:6px;">Save Tool</button>
+      <button class="btn btn-ghost" id="closeAddToolBtn" style="margin-top:6px;">Cancel</button>
+    </div>
+  </div>
+
+  <!-- ===================== TOOL VIEWER SHEET ===================== -->
+  <div class="sheet-overlay hidden" id="sheetViewTool">
+    <div class="sheet viewer-sheet">
+      <div class="viewer-header">
+        <div class="sheet-title" id="viewerTitle">Tool</div>
+        <button id="closeViewerBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <iframe class="viewer-frame" id="viewerFrame" sandbox="allow-scripts allow-forms allow-popups allow-modals allow-same-origin"></iframe>
+    </div>
+  </div>
+
+  <!-- Firebase (compat SDK) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+  <script>
+/* ============================================================
+   firebase-config.js
+   এখানে আপনার Firebase প্রজেক্টের config বসান।
+   Firebase Console → Project Settings → General → Your apps → SDK setup
+   থেকে এই মানগুলো কপি করে নিচে বসিয়ে দিন।
+   ============================================================ */
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBth3rO-sl9UHUfXYr0S82OjUySiAwcB0U",
+  authDomain: "mytools-572f1.firebaseapp.com",
+  databaseURL: "https://mytools-572f1-default-rtdb.firebaseio.com",
+  projectId: "mytools-572f1",
+  storageBucket: "mytools-572f1.firebasestorage.app",
+  messagingSenderId: "187745737891",
+  appId: "1:187745737891:web:24878feeb96f22f5e23316",
+  measurementId: "G-P5W99L29BG"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+const db = firebase.database();
+const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+
+/* ============================================================
+   default-tools.js
+   HTML content for the tools that are auto-created for every
+   new user. Each is a small self-contained page that saves its
+   data in the browser's localStorage (scoped to this tool only).
+   ============================================================ */
+
+const DEFAULT_TOOLS = [
+  {
+    name: "Password Saver",
+    icon: "fa-solid fa-lock",
+    description: "Store site logins on this device",
+    html: `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{ --primary:#2D8CFF; --primary-dark:#0B5FFF; --bg:#EAF4FF; --text:#0F2A4A; --muted:#5B7C99; }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);padding:18px;}
+  h2{font-size:17px;margin:4px 0 4px;}
+  p.note{font-size:11.5px;color:var(--muted);margin:0 0 16px;line-height:1.5;}
+  .field{margin-bottom:10px;}
+  input{width:100%;padding:11px 12px;border-radius:10px;border:1.5px solid #BFE0FF;background:#fff;font-size:14px;outline:none;}
+  input:focus{border-color:var(--primary);}
+  button{width:100%;padding:12px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font-weight:600;font-size:14px;cursor:pointer;margin-top:4px;}
+  .row{display:flex;gap:8px;}
+  .list{margin-top:20px;display:flex;flex-direction:column;gap:10px;}
+  .item{background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 4px 14px -6px rgba(11,95,255,.2);}
+  .item .site{font-weight:600;font-size:14px;}
+  .item .user{font-size:12.5px;color:var(--muted);margin-top:2px;}
+  .item .pass{font-size:12.5px;margin-top:6px;display:flex;align-items:center;gap:8px;}
+  .item .pass code{background:#EAF4FF;padding:3px 8px;border-radius:6px;letter-spacing:1px;}
+  .item .actions{display:flex;gap:10px;margin-top:8px;}
+  .item .actions button{width:auto;padding:6px 12px;font-size:11.5px;background:#EAF4FF;color:var(--primary-dark);font-weight:600;}
+  .item .actions .del{background:#FFF1F1;color:#FF5C5C;}
+  .empty{text-align:center;color:var(--muted);font-size:13px;margin-top:30px;}
+</style></head>
+<body>
+  <h2>Password Saver</h2>
+  <p class="note">Saved only in this browser's local storage. Not encrypted — use for low-risk logins only.</p>
+
+  <div class="field"><input id="site" placeholder="Website or app name"></div>
+  <div class="row">
+    <div class="field" style="flex:1"><input id="user" placeholder="Username / email"></div>
+  </div>
+  <div class="field"><input id="pass" placeholder="Password" type="text"></div>
+  <button onclick="saveEntry()">Save Login</button>
+
+  <div class="list" id="list"></div>
+  <div class="empty" id="empty" style="display:none;">No logins saved yet.</div>
+
+<script>
+  const KEY = 'mytools_password_saver';
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY) || '[]'); }catch(e){ return []; } }
+  function save(items){ localStorage.setItem(KEY, JSON.stringify(items)); }
+
+  function render(){
+    const items = load();
+    const list = document.getElementById('list');
+    const empty = document.getElementById('empty');
+    if(items.length === 0){ list.innerHTML=''; empty.style.display='block'; return; }
+    empty.style.display='none';
+    list.innerHTML = items.map((it,i) => \`
+      <div class="item">
+        <div class="site">\${escapeHtml(it.site)}</div>
+        <div class="user">\${escapeHtml(it.user || '—')}</div>
+        <div class="pass"><code id="p\${i}">••••••••</code>
+          <button onclick="toggle(\${i})" style="width:auto;padding:4px 10px;font-size:11px;">Show</button>
+          <button onclick="copyPass(\${i})" style="width:auto;padding:4px 10px;font-size:11px;">Copy</button>
+        </div>
+        <div class="actions"><button class="del" onclick="removeEntry(\${i})">Delete</button></div>
+      </div>\`).join('');
+  }
+
+  function escapeHtml(s){ const d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+
+  function saveEntry(){
+    const site = document.getElementById('site').value.trim();
+    const user = document.getElementById('user').value.trim();
+    const pass = document.getElementById('pass').value;
+    if(!site || !pass) return;
+    const items = load();
+    items.push({site, user, pass});
+    save(items);
+    document.getElementById('site').value='';
+    document.getElementById('user').value='';
+    document.getElementById('pass').value='';
+    render();
+  }
+
+  function removeEntry(i){
+    const items = load();
+    items.splice(i,1);
+    save(items);
+    render();
+  }
+
+  function toggle(i){
+    const items = load();
+    const el = document.getElementById('p'+i);
+    el.textContent = el.textContent === '••••••••' ? items[i].pass : '••••••••';
+  }
+
+  function copyPass(i){
+    const items = load();
+    navigator.clipboard.writeText(items[i].pass).catch(()=>{});
+  }
+
+  render();
+<\/script>
+</body></html>`
+  },
+
+  {
+    name: "Quick Notes",
+    icon: "fa-solid fa-note-sticky",
+    description: "Jot down quick notes, auto-saved",
+    html: `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{ --primary:#2D8CFF; --bg:#EAF4FF; --text:#0F2A4A; --muted:#5B7C99; }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);padding:18px;height:100vh;display:flex;flex-direction:column;}
+  h2{font-size:17px;margin:4px 0 12px;}
+  textarea{flex:1;width:100%;border:1.5px solid #BFE0FF;border-radius:12px;padding:14px;font-size:14.5px;font-family:inherit;resize:none;outline:none;background:#fff;line-height:1.6;}
+  textarea:focus{border-color:var(--primary);}
+  .status{font-size:11.5px;color:var(--muted);margin-top:8px;text-align:right;}
+</style></head>
+<body>
+  <h2>Quick Notes</h2>
+  <textarea id="notes" placeholder="Start typing... your note is saved automatically."></textarea>
+  <div class="status" id="status">Saved</div>
+<script>
+  const KEY = 'mytools_quick_notes';
+  const ta = document.getElementById('notes');
+  const status = document.getElementById('status');
+  ta.value = localStorage.getItem(KEY) || '';
+  let t;
+  ta.addEventListener('input', () => {
+    status.textContent = 'Saving...';
+    clearTimeout(t);
+    t = setTimeout(() => {
+      localStorage.setItem(KEY, ta.value);
+      status.textContent = 'Saved';
+    }, 400);
+  });
+<\/script>
+</body></html>`
+  },
+
+  {
+    name: "To-Do List",
+    icon: "fa-solid fa-list-check",
+    description: "Simple checklist to track tasks",
+    html: `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{ --primary:#2D8CFF; --primary-dark:#0B5FFF; --bg:#EAF4FF; --text:#0F2A4A; --muted:#5B7C99; }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);padding:18px;}
+  h2{font-size:17px;margin:4px 0 12px;}
+  .row{display:flex;gap:8px;margin-bottom:14px;}
+  input{flex:1;padding:11px 12px;border-radius:10px;border:1.5px solid #BFE0FF;background:#fff;font-size:14px;outline:none;}
+  input:focus{border-color:var(--primary);}
+  button.add{width:46px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font-size:16px;cursor:pointer;}
+  .task{display:flex;align-items:center;gap:10px;background:#fff;border-radius:12px;padding:12px 14px;margin-bottom:8px;box-shadow:0 4px 14px -6px rgba(11,95,255,.2);}
+  .task .box{width:20px;height:20px;border-radius:6px;border:2px solid var(--primary);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;cursor:pointer;}
+  .task.done .box{background:var(--primary);}
+  .task .txt{flex:1;font-size:14px;}
+  .task.done .txt{text-decoration:line-through;color:var(--muted);}
+  .task .del{color:#FF5C5C;font-size:13px;cursor:pointer;}
+  .empty{text-align:center;color:var(--muted);font-size:13px;margin-top:30px;}
+</style></head>
+<body>
+  <h2>To-Do List</h2>
+  <div class="row">
+    <input id="taskInput" placeholder="Add a task...">
+    <button class="add" onclick="addTask()">+</button>
+  </div>
+  <div id="list"></div>
+  <div class="empty" id="empty" style="display:none;">Nothing to do yet 🎉</div>
+<script>
+  const KEY = 'mytools_todo_list';
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY) || '[]'); }catch(e){ return []; } }
+  function save(items){ localStorage.setItem(KEY, JSON.stringify(items)); }
+  function escapeHtml(s){ const d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+
+  function render(){
+    const items = load();
+    const list = document.getElementById('list');
+    const empty = document.getElementById('empty');
+    if(items.length === 0){ list.innerHTML=''; empty.style.display='block'; return; }
+    empty.style.display='none';
+    list.innerHTML = items.map((it,i) => \`
+      <div class="task \${it.done?'done':''}">
+        <div class="box" onclick="toggleTask(\${i})">\${it.done?'✓':''}</div>
+        <div class="txt">\${escapeHtml(it.text)}</div>
+        <div class="del" onclick="removeTask(\${i})">✕</div>
+      </div>\`).join('');
+  }
+
+  function addTask(){
+    const inp = document.getElementById('taskInput');
+    const val = inp.value.trim();
+    if(!val) return;
+    const items = load();
+    items.push({text: val, done:false});
+    save(items);
+    inp.value = '';
+    render();
+  }
+  function toggleTask(i){ const items=load(); items[i].done = !items[i].done; save(items); render(); }
+  function removeTask(i){ const items=load(); items.splice(i,1); save(items); render(); }
+
+  document.getElementById('taskInput').addEventListener('keydown', e => { if(e.key==='Enter') addTask(); });
+  render();
+<\/script>
+</body></html>`
+  },
+
+  {
+    name: "Social Media Vault",
+    icon: "fa-solid fa-share-nodes",
+    description: "Save mobile, email, username & password per platform",
+    html: `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{ --primary:#2D8CFF; --primary-dark:#0B5FFF; --bg:#EAF4FF; --text:#0F2A4A; --muted:#5B7C99; }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);padding:18px;}
+  h2{font-size:17px;margin:4px 0 4px;}
+  p.note{font-size:11.5px;color:var(--muted);margin:0 0 16px;line-height:1.5;}
+  .field{margin-bottom:10px;}
+  label{display:block;font-size:11.5px;color:var(--muted);margin-bottom:4px;font-weight:600;}
+  input{width:100%;padding:11px 12px;border-radius:10px;border:1.5px solid #BFE0FF;background:#fff;font-size:14px;outline:none;}
+  input:focus{border-color:var(--primary);}
+  button.save{width:100%;padding:12px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font-weight:600;font-size:14px;cursor:pointer;margin-top:6px;}
+  .list{margin-top:22px;display:flex;flex-direction:column;gap:10px;}
+  .item{background:#fff;border-radius:12px;padding:14px;box-shadow:0 4px 14px -6px rgba(11,95,255,.2);}
+  .item .platform{font-weight:700;font-size:14.5px;display:flex;align-items:center;gap:8px;}
+  .item .platform i{color:var(--primary);}
+  .item .row{font-size:12.5px;color:var(--muted);margin-top:6px;display:flex;align-items:center;gap:6px;}
+  .item .row b{color:var(--text);font-weight:600;min-width:0;word-break:break-all;}
+  .item .row .lbl{width:52px;flex-shrink:0;color:var(--muted);}
+  .item .pass-row{display:flex;align-items:center;gap:8px;}
+  .item .pass-row code{background:#EAF4FF;padding:2px 8px;border-radius:6px;letter-spacing:1px;font-size:12px;}
+  .item .actions{display:flex;gap:8px;margin-top:10px;}
+  .item .actions button{width:auto;padding:6px 12px;font-size:11.5px;border:none;border-radius:8px;background:#EAF4FF;color:var(--primary-dark);font-weight:600;cursor:pointer;}
+  .item .actions .del{background:#FFF1F1;color:#FF5C5C;}
+  .empty{text-align:center;color:var(--muted);font-size:13px;margin-top:30px;}
+</style></head>
+<body>
+  <h2>Social Media Vault</h2>
+  <p class="note">Saved only in this browser's local storage. Not encrypted — use for low-risk accounts only.</p>
+
+  <div class="field"><label>Platform</label><input id="platform" placeholder="e.g. Instagram, Facebook, X"></div>
+  <div class="field"><label>Mobile Number</label><input id="mobile" placeholder="e.g. +8801XXXXXXXXX"></div>
+  <div class="field"><label>Email</label><input id="email" placeholder="e.g. name@example.com"></div>
+  <div class="field"><label>Username</label><input id="username" placeholder="e.g. @yourhandle"></div>
+  <div class="field"><label>Password</label><input id="pass" placeholder="Password"></div>
+  <button class="save" onclick="saveEntry()">Save Account</button>
+
+  <div class="list" id="list"></div>
+  <div class="empty" id="empty" style="display:none;">No accounts saved yet.</div>
+
+<script>
+  const KEY = 'mytools_social_vault';
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY) || '[]'); }catch(e){ return []; } }
+  function save(items){ localStorage.setItem(KEY, JSON.stringify(items)); }
+  function escapeHtml(s){ const d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+
+  function render(){
+    const items = load();
+    const list = document.getElementById('list');
+    const empty = document.getElementById('empty');
+    if(items.length === 0){ list.innerHTML=''; empty.style.display='block'; return; }
+    empty.style.display='none';
+    list.innerHTML = items.map((it,i) => \`
+      <div class="item">
+        <div class="platform"><i class="fa-solid fa-share-nodes"></i>\${escapeHtml(it.platform || 'Untitled')}</div>
+        \${it.mobile ? \`<div class="row"><span class="lbl">Mobile</span><b>\${escapeHtml(it.mobile)}</b></div>\` : ''}
+        \${it.email ? \`<div class="row"><span class="lbl">Email</span><b>\${escapeHtml(it.email)}</b></div>\` : ''}
+        \${it.username ? \`<div class="row"><span class="lbl">User</span><b>\${escapeHtml(it.username)}</b></div>\` : ''}
+        <div class="row pass-row"><span class="lbl">Pass</span>
+          <code id="p\${i}">••••••••</code>
+          <button onclick="toggle(\${i})" style="width:auto;padding:4px 10px;font-size:11px;border:none;border-radius:8px;background:#EAF4FF;color:var(--primary-dark);cursor:pointer;">Show</button>
+          <button onclick="copyPass(\${i})" style="width:auto;padding:4px 10px;font-size:11px;border:none;border-radius:8px;background:#EAF4FF;color:var(--primary-dark);cursor:pointer;">Copy</button>
+        </div>
+        <div class="actions"><button class="del" onclick="removeEntry(\${i})">Delete</button></div>
+      </div>\`).join('');
+  }
+
+  function saveEntry(){
+    const platform = document.getElementById('platform').value.trim();
+    const mobile = document.getElementById('mobile').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const username = document.getElementById('username').value.trim();
+    const pass = document.getElementById('pass').value;
+    if(!platform || !pass) return;
+    const items = load();
+    items.push({platform, mobile, email, username, pass});
+    save(items);
+    ['platform','mobile','email','username','pass'].forEach(id => document.getElementById(id).value = '');
+    render();
+  }
+
+  function removeEntry(i){
+    const items = load();
+    items.splice(i,1);
+    save(items);
+    render();
+  }
+
+  function toggle(i){
+    const items = load();
+    const el = document.getElementById('p'+i);
+    el.textContent = el.textContent === '••••••••' ? items[i].pass : '••••••••';
+  }
+
+  function copyPass(i){
+    const items = load();
+    navigator.clipboard.writeText(items[i].pass).catch(()=>{});
+  }
+
+  render();
+<\/script>
+</body></html>`
+  }
+];
+
+
+/* ============================================================
+   My Tools — app.js
+   App logic: Google Sign-in, PIN, Fingerprint (WebAuthn),
+   default tool seeding, and Tools CRUD — all via Firebase
+   Realtime Database.
+   ============================================================ */
+
+/* ---------------- Helpers ---------------- */
+const $ = (id) => document.getElementById(id);
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+  $(id).classList.remove('hidden');
+}
+
+function toast(msg){
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2200);
+}
+
+async function sha256(text){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+function b64urlToBuffer(b64url){
+  const b64 = b64url.replace(/-/g,'+').replace(/_/g,'/');
+  const pad = b64.length % 4 ? '===='.slice(b64.length % 4) : '';
+  const raw = atob(b64 + pad);
+  const buf = new Uint8Array(raw.length);
+  for(let i=0;i<raw.length;i++) buf[i] = raw.charCodeAt(i);
+  return buf;
+}
+function bufferToB64url(buf){
+  let str = '';
+  new Uint8Array(buf).forEach(b => str += String.fromCharCode(b));
+  return btoa(str).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+
+/* ---------------- Offline support ---------------- */
+// Fetches the user's profile from Firebase when online, and falls back to
+// a locally cached copy when offline (or when the request fails/times out).
+async function fetchProfile(uid){
+  const cacheKey = 'mt_profile_' + uid;
+  if(navigator.onLine){
+    try{
+      const snap = await Promise.race([
+        db.ref('users/' + uid + '/profile').once('value'),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000))
+      ]);
+      const profile = snap.val();
+      if(profile) localStorage.setItem(cacheKey, JSON.stringify(profile));
+      return profile;
+    }catch(err){
+      console.warn('Profile fetch failed, using cache if available', err);
+    }
+  }
+  const cached = localStorage.getItem(cacheKey);
+  return cached ? JSON.parse(cached) : null;
+}
+
+function updateOnlineStatus(){
+  const banner = $('offlineBanner');
+  if(banner) banner.classList.toggle('hidden', navigator.onLine);
+}
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+updateOnlineStatus();
+
+$('retryOnlineBtn').addEventListener('click', () => location.reload());
+
+/* ---------------- State ---------------- */
+let currentUser = null;
+let pendingPin = '';
+let newPinTemp = '';
+let pinMode = 'setup'; // 'setup' | 'unlock' | 'change-verify' | 'change-new' | 'change-confirm'
+let selectedIcon = 'fa-solid fa-toolbox';
+let uploadedHtml = '';
+let toolsCache = {};
+let fpDeviceAvailable = false;
+
+(async function detectFingerprintSupport(){
+  try{
+    if(window.PublicKeyCredential && PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable){
+      fpDeviceAvailable = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+    }
+  }catch(e){ fpDeviceAvailable = false; }
+})();
+
+const ICON_CHOICES = [
+  'fa-solid fa-toolbox','fa-solid fa-lock','fa-solid fa-share-nodes',
+  'fa-solid fa-note-sticky','fa-solid fa-list-check','fa-solid fa-calculator',
+  'fa-solid fa-code','fa-solid fa-chart-line','fa-solid fa-clock','fa-solid fa-image',
+  'fa-solid fa-file-lines','fa-solid fa-qrcode','fa-solid fa-palette',
+  'fa-solid fa-gauge','fa-solid fa-database','fa-solid fa-gear'
+];
+
+/* ---------------- Auth: Google Sign-in ---------------- */
+$('googleSignInBtn').addEventListener('click', async () => {
+  try{
+    $('googleSignInBtn').querySelector('span').textContent = 'Please wait...';
+    await auth.signInWithPopup(googleProvider);
+  }catch(err){
+    console.error(err);
+    toast('Sign-in failed, please try again');
+    $('googleSignInBtn').querySelector('span').textContent = 'Continue with Google';
+  }
+});
+
+$('logoutBtn').addEventListener('click', async () => {
+  sessionStorage.removeItem('mt_unlocked');
+  $('sheetSettings').classList.add('hidden');
+  await auth.signOut();
+});
+
+auth.onAuthStateChanged(async (user) => {
+  if(!user){
+    currentUser = null;
+    showScreen('screenLogin');
+    return;
+  }
+  currentUser = user;
+  const profile = await fetchProfile(user.uid);
+
+  if(!profile){
+    if(!navigator.onLine){
+      // First-ever load on this device with no connection and nothing cached
+      showScreen('screenOfflineBlocked');
+      return;
+    }
+    // New user — create profile and ask them to set a PIN
+    await db.ref('users/' + user.uid + '/profile').update({
+      name: user.displayName || '',
+      email: user.email || '',
+      photo: user.photoURL || '',
+      pinSet: false
+    });
+    pinMode = 'setup';
+    pendingPin = '';
+    renderPinDots();
+    $('pinTitle').textContent = 'Set a PIN';
+    $('pinSubtitle').textContent = 'Choose a 4-digit PIN you\u2019ll use to unlock the app';
+    showScreen('screenPin');
+    return;
+  }
+
+  if(!profile.pinSet){
+    if(!navigator.onLine){
+      showScreen('screenOfflineBlocked');
+      return;
+    }
+    pinMode = 'setup';
+    pendingPin = '';
+    renderPinDots();
+    $('pinTitle').textContent = 'Set a PIN';
+    $('pinSubtitle').textContent = 'Choose a 4-digit PIN you\u2019ll use to unlock the app';
+    showScreen('screenPin');
+    return;
+  }
+
+  if(sessionStorage.getItem('mt_unlocked') === user.uid){
+    enterDashboard();
+    return;
+  }
+
+  // Needs to unlock
+  if(profile.webauthnEnabled){
+    showScreen('screenUnlockChoice');
+  } else {
+    pinMode = 'unlock';
+    pendingPin = '';
+    renderPinDots();
+    $('pinTitle').textContent = 'Unlock with PIN';
+    $('pinSubtitle').textContent = 'Enter your 4-digit PIN';
+    showScreen('screenPin');
+  }
+});
+
+/* ---------------- PIN pad ---------------- */
+function renderPinDots(){
+  const dots = document.querySelectorAll('#pinDots .pin-dot');
+  dots.forEach((d,i) => {
+    d.classList.toggle('filled', i < pendingPin.length);
+    d.classList.remove('error');
+  });
+}
+
+function pinError(){
+  document.querySelectorAll('#pinDots .pin-dot').forEach(d => d.classList.add('error'));
+  setTimeout(() => { pendingPin=''; renderPinDots(); }, 400);
+}
+
+document.querySelectorAll('.key[data-digit]').forEach(key => {
+  key.addEventListener('click', async () => {
+    if(pendingPin.length >= 4) return;
+    pendingPin += key.dataset.digit;
+    renderPinDots();
+    if(pendingPin.length === 4){
+      await handlePinComplete();
+    }
+  });
+});
+$('pinBackspace').addEventListener('click', () => {
+  pendingPin = pendingPin.slice(0,-1);
+  renderPinDots();
+});
+
+async function handlePinComplete(){
+  const hash = await sha256(pendingPin);
+
+  if(pinMode === 'setup'){
+    await db.ref('users/' + currentUser.uid + '/profile').update({
+      pinHash: hash,
+      pinSet: true
+    });
+    pendingPin = '';
+
+    if(fpDeviceAvailable){
+      showScreen('screenFingerprintSetup');
+    } else {
+      enterDashboard();
+    }
+    return;
+  }
+
+  if(pinMode === 'unlock'){
+    const profile = await fetchProfile(currentUser.uid);
+    if(profile && profile.pinHash === hash){
+      sessionStorage.setItem('mt_unlocked', currentUser.uid);
+      pendingPin = '';
+      enterDashboard();
+    } else {
+      pinError();
+      toast('Incorrect PIN');
+    }
+    return;
+  }
+
+  if(pinMode === 'change-verify'){
+    if(!navigator.onLine){
+      toast('Connect to the internet to change your PIN');
+      pendingPin = '';
+      renderPinDots();
+      return;
+    }
+    const profile = await fetchProfile(currentUser.uid);
+    if(profile && profile.pinHash === hash){
+      pinMode = 'change-new';
+      pendingPin = '';
+      renderPinDots();
+      $('pinTitle').textContent = 'Set new PIN';
+      $('pinSubtitle').textContent = 'Choose a new 4-digit PIN';
+    } else {
+      pinError();
+      toast('Incorrect PIN');
+    }
+    return;
+  }
+
+  if(pinMode === 'change-new'){
+    newPinTemp = pendingPin;
+    pinMode = 'change-confirm';
+    pendingPin = '';
+    renderPinDots();
+    $('pinTitle').textContent = 'Confirm new PIN';
+    $('pinSubtitle').textContent = 'Re-enter your new PIN';
+    return;
+  }
+
+  if(pinMode === 'change-confirm'){
+    if(pendingPin === newPinTemp){
+      await db.ref('users/' + currentUser.uid + '/profile').update({ pinHash: hash });
+      newPinTemp = '';
+      pendingPin = '';
+      toast('PIN updated \u2705');
+      enterDashboard();
+    } else {
+      pinError();
+      toast('PINs didn\u2019t match, try again');
+      pinMode = 'change-new';
+      newPinTemp = '';
+      setTimeout(() => {
+        pendingPin = '';
+        renderPinDots();
+        $('pinTitle').textContent = 'Set new PIN';
+        $('pinSubtitle').textContent = 'Choose a new 4-digit PIN';
+      }, 400);
+    }
+  }
+}
+
+$('pinCancelLink').addEventListener('click', () => {
+  pendingPin = '';
+  newPinTemp = '';
+  enterDashboard();
+});
+
+/* ---------------- Default tools (backfills any missing default tool) ---------------- */
+async function seedDefaultTools(){
+  const toolsSnap = await db.ref('users/' + currentUser.uid + '/tools').once('value');
+  const existingTools = toolsSnap.val() || {};
+  const existingNames = new Set(Object.values(existingTools).map(t => t.name));
+
+  const missing = DEFAULT_TOOLS.filter(t => !existingNames.has(t.name));
+  if(missing.length === 0) return;
+
+  const updates = {};
+  missing.forEach((tool) => {
+    const key = db.ref('users/' + currentUser.uid + '/tools').push().key;
+    updates[key] = {
+      name: tool.name,
+      description: tool.description,
+      icon: tool.icon,
+      html: tool.html,
+      createdAt: Date.now()
+    };
+  });
+
+  await db.ref('users/' + currentUser.uid + '/tools').update(updates);
+}
+
+/* ---------------- Fingerprint (WebAuthn) setup ---------------- */
+$('setupFingerprintBtn').addEventListener('click', async () => {
+  try{
+    const challenge = crypto.getRandomValues(new Uint8Array(32));
+    const userIdBuf = new TextEncoder().encode(currentUser.uid);
+
+    const cred = await navigator.credentials.create({
+      publicKey: {
+        challenge,
+        rp: { name: 'My Tools' },
+        user: {
+          id: userIdBuf,
+          name: currentUser.email || currentUser.uid,
+          displayName: currentUser.displayName || 'My Tools User'
+        },
+        pubKeyCredParams: [{ type:'public-key', alg:-7 }, { type:'public-key', alg:-257 }],
+        authenticatorSelection: { authenticatorAttachment:'platform', userVerification:'required' },
+        timeout: 60000
+      }
+    });
+
+    await db.ref('users/' + currentUser.uid + '/profile').update({
+      webauthnEnabled: true,
+      credentialId: bufferToB64url(cred.rawId)
+    });
+    toast('Fingerprint unlock enabled \u2705');
+  }catch(err){
+    console.error(err);
+    toast('Could not set up fingerprint, skipping');
+  }
+  enterDashboard();
+});
+
+$('skipFingerprintBtn').addEventListener('click', enterDashboard);
+
+/* ---------------- Unlock: fingerprint or PIN choice ---------------- */
+$('unlockFingerprintBtn').addEventListener('click', async () => {
+  try{
+    const profile = await fetchProfile(currentUser.uid);
+    const challenge = crypto.getRandomValues(new Uint8Array(32));
+
+    await navigator.credentials.get({
+      publicKey: {
+        challenge,
+        allowCredentials: profile.credentialId ? [{
+          id: b64urlToBuffer(profile.credentialId),
+          type: 'public-key'
+        }] : [],
+        userVerification: 'required',
+        timeout: 60000
+      }
+    });
+
+    sessionStorage.setItem('mt_unlocked', currentUser.uid);
+    enterDashboard();
+  }catch(err){
+    console.error(err);
+    toast('Fingerprint didn\u2019t match, use PIN instead');
+  }
+});
+
+$('useUnlockPinBtn').addEventListener('click', () => {
+  pinMode = 'unlock';
+  pendingPin = '';
+  renderPinDots();
+  $('pinTitle').textContent = 'Unlock with PIN';
+  $('pinSubtitle').textContent = 'Enter your 4-digit PIN';
+  showScreen('screenPin');
+});
+
+/* ---------------- Dashboard ---------------- */
+async function enterDashboard(){
+  showScreen('screenDashboard');
+  $('pinCancelLink').classList.add('hidden');
+  updateOnlineStatus();
+  $('userGreeting').textContent = (currentUser.displayName || 'there').split(' ')[0];
+  if(currentUser.photoURL){
+    $('userAvatar').src = currentUser.photoURL;
+    $('settingsAvatar').src = currentUser.photoURL;
+  }
+  $('settingsName').textContent = currentUser.displayName || 'My Tools User';
+  $('settingsEmail').textContent = currentUser.email || '';
+  loadTools();
+  // Backfills default tools for any account that doesn't have them yet
+  // (covers brand-new signups as well as accounts created before this feature
+  // existed). Skipped while offline since it needs a live write.
+  if(navigator.onLine){
+    await seedDefaultTools();
+  }
+}
+
+/* ---------------- Profile / Settings sheet ---------------- */
+$('profileBtn').addEventListener('click', async () => {
+  $('sheetSettings').classList.remove('hidden');
+  await refreshSettingsSheet();
+});
+$('closeSettingsBtn').addEventListener('click', () => {
+  $('sheetSettings').classList.add('hidden');
+});
+$('sheetSettings').addEventListener('click', (e) => {
+  if(e.target.id === 'sheetSettings') $('sheetSettings').classList.add('hidden');
+});
+
+async function refreshSettingsSheet(){
+  const profile = await fetchProfile(currentUser.uid) || {};
+  const statusEl = $('fingerprintStatus');
+  const rowEl = $('fingerprintToggleBtn');
+  if(!fpDeviceAvailable){
+    rowEl.classList.add('disabled');
+    statusEl.textContent = 'Unsupported';
+    statusEl.classList.remove('on');
+    return;
+  }
+  rowEl.classList.remove('disabled');
+  if(profile.webauthnEnabled){
+    statusEl.textContent = 'On';
+    statusEl.classList.add('on');
+  } else {
+    statusEl.textContent = 'Off';
+    statusEl.classList.remove('on');
+  }
+}
+
+/* ---------------- Change PIN (from settings) ---------------- */
+$('changePinBtn').addEventListener('click', () => {
+  if(!navigator.onLine){
+    toast('Connect to the internet to change your PIN');
+    return;
+  }
+  $('sheetSettings').classList.add('hidden');
+  pinMode = 'change-verify';
+  pendingPin = '';
+  newPinTemp = '';
+  renderPinDots();
+  $('pinTitle').textContent = 'Enter current PIN';
+  $('pinSubtitle').textContent = 'Verify it\u2019s you before setting a new PIN';
+  $('pinCancelLink').classList.remove('hidden');
+  showScreen('screenPin');
+});
+
+/* ---------------- Fingerprint toggle (from settings) ---------------- */
+$('fingerprintToggleBtn').addEventListener('click', async () => {
+  if(!navigator.onLine){
+    toast('Connect to the internet to change this setting');
+    return;
+  }
+  const profile = await fetchProfile(currentUser.uid) || {};
+
+  if(profile.webauthnEnabled){
+    if(!confirm('Turn off fingerprint unlock?')) return;
+    await db.ref('users/' + currentUser.uid + '/profile').update({
+      webauthnEnabled: false,
+      credentialId: null
+    });
+    toast('Fingerprint unlock turned off');
+    refreshSettingsSheet();
+    return;
+  }
+
+  try{
+    const challenge = crypto.getRandomValues(new Uint8Array(32));
+    const userIdBuf = new TextEncoder().encode(currentUser.uid);
+
+    const cred = await navigator.credentials.create({
+      publicKey: {
+        challenge,
+        rp: { name: 'My Tools' },
+        user: {
+          id: userIdBuf,
+          name: currentUser.email || currentUser.uid,
+          displayName: currentUser.displayName || 'My Tools User'
+        },
+        pubKeyCredParams: [{ type:'public-key', alg:-7 }, { type:'public-key', alg:-257 }],
+        authenticatorSelection: { authenticatorAttachment:'platform', userVerification:'required' },
+        timeout: 60000
+      }
+    });
+
+    await db.ref('users/' + currentUser.uid + '/profile').update({
+      webauthnEnabled: true,
+      credentialId: bufferToB64url(cred.rawId)
+    });
+    toast('Fingerprint unlock enabled \u2705');
+  }catch(err){
+    console.error(err);
+    toast('Could not set up fingerprint');
+  }
+  refreshSettingsSheet();
+});
+
+function loadTools(){
+  const cacheKey = 'mt_tools_' + currentUser.uid;
+  const cached = localStorage.getItem(cacheKey);
+  if(cached){
+    try{ toolsCache = JSON.parse(cached); renderTools(); }catch(e){ /* ignore corrupt cache */ }
+  }
+  db.ref('users/' + currentUser.uid + '/tools').on('value', (snap) => {
+    toolsCache = snap.val() || {};
+    localStorage.setItem(cacheKey, JSON.stringify(toolsCache));
+    renderTools();
+  });
+}
+
+function renderTools(){
+  const grid = $('toolGrid');
+  const ids = Object.keys(toolsCache);
+  if(ids.length === 0){
+    grid.innerHTML = '';
+    $('emptyState').classList.remove('hidden');
+    return;
+  }
+  $('emptyState').classList.add('hidden');
+  grid.innerHTML = ids.map(id => {
+    const t = toolsCache[id];
+    return `
+      <div class="tool-card" data-id="${id}">
+        <button class="tool-delete" data-delete="${id}" aria-label="Delete">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+        <div class="tool-icon"><i class="${t.icon}"></i></div>
+        <div class="tool-name">${escapeHtml(t.name)}</div>
+        ${t.description ? `<div class="tool-desc">${escapeHtml(t.description)}</div>` : ''}
+      </div>`;
+  }).join('');
+
+  grid.querySelectorAll('.tool-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      if(e.target.closest('[data-delete]')) return;
+      openToolViewer(card.dataset.id);
+    });
+  });
+  grid.querySelectorAll('[data-delete]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      deleteTool(btn.dataset.delete);
+    });
+  });
+}
+
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML;
+}
+
+function deleteTool(id){
+  if(!navigator.onLine){
+    toast('Connect to the internet to delete tools');
+    return;
+  }
+  if(!confirm('Delete this tool?')) return;
+  db.ref('users/' + currentUser.uid + '/tools/' + id).remove();
+  toast('Tool deleted');
+}
+
+/* ---------------- Add Tool sheet ---------------- */
+function buildIconChoices(){
+  $('iconChoices').innerHTML = ICON_CHOICES.map(ic => `
+    <button type="button" class="icon-choice ${ic===selectedIcon?'selected':''}" data-icon="${ic}">
+      <i class="${ic}"></i>
+    </button>`).join('');
+  $('iconChoices').querySelectorAll('.icon-choice').forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedIcon = btn.dataset.icon;
+      $('iconChoices').querySelectorAll('.icon-choice').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      $('iconPreview').innerHTML = `<i class="${selectedIcon}"></i>`;
+    });
+  });
+}
+
+$('fabAddTool').addEventListener('click', () => {
+  if(!navigator.onLine){
+    toast('Connect to the internet to add tools');
+    return;
+  }
+  selectedIcon = 'fa-solid fa-toolbox';
+  uploadedHtml = '';
+  $('toolNameInput').value = '';
+  $('toolDescInput').value = '';
+  $('toolFileInput').value = '';
+  $('fileStatus').textContent = '';
+  $('addToolError').textContent = '';
+  buildIconChoices();
+  $('iconPreview').innerHTML = `<i class="${selectedIcon}"></i>`;
+  $('sheetAddTool').classList.remove('hidden');
+});
+
+$('closeAddToolBtn').addEventListener('click', () => $('sheetAddTool').classList.add('hidden'));
+$('sheetAddTool').addEventListener('click', (e) => {
+  if(e.target.id === 'sheetAddTool') $('sheetAddTool').classList.add('hidden');
+});
+
+$('toolFileInput').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if(!file) return;
+  if(!file.name.endsWith('.html') && file.type !== 'text/html'){
+    $('addToolError').textContent = 'Please upload an .html file only';
+    e.target.value = '';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = () => {
+    uploadedHtml = reader.result;
+    $('fileStatus').innerHTML = `<i class="fa-solid fa-circle-check"></i> ${escapeHtml(file.name)} uploaded`;
+  };
+  reader.readAsText(file);
+});
+
+$('saveToolBtn').addEventListener('click', async () => {
+  const name = $('toolNameInput').value.trim();
+  const desc = $('toolDescInput').value.trim();
+
+  if(!name){
+    $('addToolError').textContent = 'Please enter a tool name';
+    return;
+  }
+  if(!uploadedHtml){
+    $('addToolError').textContent = 'Please upload an HTML file';
+    return;
+  }
+
+  $('saveToolBtn').disabled = true;
+  $('saveToolBtn').innerHTML = '<div class="spinner"></div>';
+
+  try{
+    await db.ref('users/' + currentUser.uid + '/tools').push({
+      name,
+      description: desc,
+      icon: selectedIcon,
+      html: uploadedHtml,
+      createdAt: Date.now()
+    });
+    $('sheetAddTool').classList.add('hidden');
+    toast('Tool added \u2705');
+  }catch(err){
+    console.error(err);
+    $('addToolError').textContent = 'Could not save, please try again';
+  }finally{
+    $('saveToolBtn').disabled = false;
+    $('saveToolBtn').innerHTML = 'Save Tool';
+  }
+});
+
+/* ---------------- Tool viewer ---------------- */
+function openToolViewer(id){
+  const t = toolsCache[id];
+  if(!t) return;
+  $('viewerTitle').textContent = t.name;
+  $('viewerFrame').srcdoc = t.html;
+  $('sheetViewTool').classList.remove('hidden');
+}
+$('closeViewerBtn').addEventListener('click', () => {
+  $('sheetViewTool').classList.add('hidden');
+  $('viewerFrame').srcdoc = '';
+});
+
+</script>
+
+  <script>
+    if('serviceWorker' in navigator){
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch((err) => {
+          console.warn('Service worker registration failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
